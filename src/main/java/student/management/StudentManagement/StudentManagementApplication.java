@@ -2,7 +2,6 @@ package student.management.StudentManagement;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +30,7 @@ public class StudentManagementApplication {
 			favorite.forEach((key, value) -> sb.append("My favorite " + key + " is " + value + "." + System.lineSeparator()));
 		}
 		return sb.toString();
-  }
+	}
 
 	@PostMapping("/studentInfo")
 	public void postStudentInfo(String name, String age) {
