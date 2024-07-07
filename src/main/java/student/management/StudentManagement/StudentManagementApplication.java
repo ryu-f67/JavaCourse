@@ -24,7 +24,7 @@ public class StudentManagementApplication {
 
 	@GetMapping("/studentInfo")
 	public String getStudentInfo() {
-    StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 		sb.append("I am "+ name +"," + age + " years old.");
 		sb.append(System.lineSeparator());
 		if (!favorite.isEmpty()) {
