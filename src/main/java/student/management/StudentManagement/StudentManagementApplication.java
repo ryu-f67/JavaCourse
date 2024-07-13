@@ -24,8 +24,8 @@ public class StudentManagementApplication {
 
 	// テーブル内すべてを取得
 	@GetMapping("/studentTable")
-	public List<Student> showStudentTable() {
-		return repository.showStudentTable();
+	public List<Student> findAllStudent() {
+		return repository.findAllStudent();
 	}
 
 	@GetMapping("/student")

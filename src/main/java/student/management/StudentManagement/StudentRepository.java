@@ -14,7 +14,7 @@ public interface StudentRepository {
   Student searchByName(String name);
 
   @Select("SELECT * FROM student")
-  List<Student> showStudentTable();
+  List<Student> findAllStudent();
 
   @Insert("INSERT student values(#{name},#{age},#{bloodType})")
   void registerStudent(String name, int age, String bloodType);
