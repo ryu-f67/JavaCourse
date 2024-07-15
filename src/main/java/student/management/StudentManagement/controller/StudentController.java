@@ -2,15 +2,15 @@ package student.management.StudentManagement.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 import student.management.StudentManagement.controller.converter.StudentConverter;
 import student.management.StudentManagement.data.Student;
 import student.management.StudentManagement.data.StudentCourse;
-import student.management.StudentManagement.domain.StudentDetail;
 import student.management.StudentManagement.service.StudentService;
 
-@RestController
+@Controller
 public class StudentController {
 
   private StudentService service;
@@ -23,17 +23,21 @@ public class StudentController {
   }
 
   @GetMapping("/studentsList")
-  public List<StudentDetail> getStudentList() {
+  public String getStudentList(Model model) {
     List<Student> students = service.searchStudentList();
     List<StudentCourse> studentCourses = service.searchStudentCourseList();
 
-    return converter.convertStudentDetails(students, studentCourses);
+    model.addAttribute("studentList", converter.convertStudentDetails(students, studentCourses));
+    return "studentList";
   }
 
   // students_coursesテーブル内すべてを取得
   @GetMapping("/studentsCoursesList")
-  public List<StudentCourse> getStudentCourseList() {
-    return service.searchStudentCourseList();
+  public String getStudentCourseList(Model model) {
+    List<StudentCourse> studentCourses = service.searchStudentCourseList();
+
+    model.addAttribute("studentsCourseList", studentCourses);
+    return "studentsCourseList";
   }
 
 }
