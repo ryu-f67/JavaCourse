@@ -1,11 +1,11 @@
 package student.management.StudentManagement.service;
 
 import java.util.List;
-import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import student.management.StudentManagement.data.Student;
 import student.management.StudentManagement.data.StudentCourse;
+import student.management.StudentManagement.domain.StudentDetail;
 import student.management.StudentManagement.repository.StudentRepository;
 
 @Service
@@ -24,6 +24,10 @@ public class StudentService {
 
   public List<StudentCourse> searchStudentCourseList() {
     return repository.searchStudentCourses();
+  }
+
+  public void registerStudent(StudentDetail studentDetail) {
+    repository.insert(studentDetail.getStudent());
   }
 
 }
