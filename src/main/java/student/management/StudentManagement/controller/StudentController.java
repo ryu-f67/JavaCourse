@@ -55,15 +55,6 @@ public class StudentController {
     if (result.hasErrors()) {
       return "registerStudent";
     }
-    System.out.println("ID:" + studentDetail.getStudent().getId());
-    System.out.println("名前:" + studentDetail.getStudent().getName());
-    System.out.println("ふりがな:" + studentDetail.getStudent().getFurigana());
-    System.out.println("ニックネーム:" + studentDetail.getStudent().getNickname());
-    System.out.println("メールアドレス:" + studentDetail.getStudent().getMail());
-    System.out.println("地域:" + studentDetail.getStudent().getArea());
-    System.out.println("年齢:" + studentDetail.getStudent().getAge());
-    System.out.println("性別:" + studentDetail.getStudent().getGender());
-    System.out.println("備考:" + studentDetail.getStudent().getRemark());
 
     service.registerStudent(studentDetail);
 
