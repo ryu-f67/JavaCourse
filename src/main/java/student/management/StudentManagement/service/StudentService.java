@@ -1,5 +1,6 @@
 package student.management.StudentManagement.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,11 @@ public class StudentService {
 
   public void registerStudent(StudentDetail studentDetail) {
     repository.insert(studentDetail.getStudent());
+    for (StudentCourse studentCourse : studentDetail.getStudentCourses()) {
+      studentCourse.setStudentId(studentDetail.getStudent().getId());
+      studentCourse.setStartAt(LocalDateTime.now());
+      studentCourse.setEndAt(LocalDateTime.now().plusMonths(2));
+      repository.insertCourse(studentCourse);
+    }
   }
-
 }
