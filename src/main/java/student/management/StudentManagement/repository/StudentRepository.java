@@ -37,7 +37,7 @@ public interface StudentRepository {
 
   @Update(
       "UPDATE students SET name=#{name}, furigana=#{furigana}, nickname=#{nickname}, mail=#{mail}, "
-          + "area=#{area}, age=#{age}, gender=#{gender}, remark=#{remark} "
+          + "area=#{area}, age=#{age}, gender=#{gender}, remark=#{remark}, is_deleted=#{isDeleted} "
           + "WHERE id = #{id}")
   void updateStudent(Student student);
 
