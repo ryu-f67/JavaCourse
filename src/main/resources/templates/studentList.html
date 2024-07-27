@@ -36,7 +36,7 @@
     <td th:text="${studentDetail.student.gender}">男性</td>
     <td th:text="${studentDetail.student.remark}">受け放題</td>
     <td>
-      <input type="checkbox" th:checked="${studentDetail.student.isDeleted}"/>
+      <input type="checkbox" th:checked="${studentDetail.student.isDeleted}" th:disabled="${true}"/>
     </td>
   </tr>
   </tbody>
