@@ -13,6 +13,9 @@ import student.management.StudentManagement.data.StudentCourse;
 public interface StudentRepository {
 
   @Select("SELECT * FROM students")
+  List<Student> searchAllStudents();
+
+  @Select("SELECT * FROM students WHERE is_deleted=false")
   List<Student> search();
 
   @Select("SELECT * FROM students WHERE id=#{id}")
