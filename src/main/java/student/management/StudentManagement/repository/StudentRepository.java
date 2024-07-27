@@ -13,6 +13,9 @@ import student.management.StudentManagement.data.StudentCourse;
 public interface StudentRepository {
 
   @Select("SELECT * FROM students")
+  List<Student> searchAllStudents();
+
+  @Select("SELECT * FROM students WHERE is_deleted=false")
   List<Student> search();
 
   @Select("SELECT * FROM students WHERE id=#{id}")
@@ -37,7 +40,7 @@ public interface StudentRepository {
 
   @Update(
       "UPDATE students SET name=#{name}, furigana=#{furigana}, nickname=#{nickname}, mail=#{mail}, "
-          + "area=#{area}, age=#{age}, gender=#{gender}, remark=#{remark} "
+          + "area=#{area}, age=#{age}, gender=#{gender}, remark=#{remark}, is_deleted=#{isDeleted} "
           + "WHERE id = #{id}")
   void updateStudent(Student student);
 
