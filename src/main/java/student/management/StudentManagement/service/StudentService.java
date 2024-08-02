@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import student.management.StudentManagement.data.Student;
 import student.management.StudentManagement.data.StudentCourse;
 import student.management.StudentManagement.domain.StudentDetail;
@@ -40,7 +41,8 @@ public class StudentService {
     return repository.searchStudentCourses();
   }
 
-  public void registerStudent(StudentDetail studentDetail) {
+  @Transactional
+  public StudentDetail registerStudent(StudentDetail studentDetail) {
     repository.insert(studentDetail.getStudent());
     for (StudentCourse studentCourse : studentDetail.getStudentCourses()) {
       studentCourse.setStudentId(studentDetail.getStudent().getId());
@@ -48,8 +50,10 @@ public class StudentService {
       studentCourse.setEndAt(LocalDateTime.now().plusMonths(2));
       repository.insertCourse(studentCourse);
     }
+    return studentDetail;
   }
 
+  @Transactional
   public void updateStudent(StudentDetail studentDetail) {
     repository.updateStudent(studentDetail.getStudent());
     for (StudentCourse studentCourse : studentDetail.getStudentCourses()) {

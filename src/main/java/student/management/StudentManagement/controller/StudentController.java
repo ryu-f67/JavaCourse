@@ -63,20 +63,14 @@ public class StudentController {
   }
 
   @PostMapping("/registerStudent")
-  public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
-    if (result.hasErrors()) {
-      return "registerStudent";
-    }
-
-    service.registerStudent(studentDetail);
-    return "redirect:/studentsList";
+  public ResponseEntity<StudentDetail> registerStudent(@RequestBody StudentDetail studentDetail) {
+    StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
+    return ResponseEntity.ok(responseStudentDetail);
   }
 
   @GetMapping("/student/{id}")
-  public String getStudent(@PathVariable String id, Model model) {
-    StudentDetail studentDetail = service.searchStudent(id);
-    model.addAttribute("studentDetail", studentDetail);
-    return "updateStudent";
+  public StudentDetail getStudent(@PathVariable String id) {
+    return service.searchStudent(id);
   }
 
   @PostMapping("/updateStudent")
