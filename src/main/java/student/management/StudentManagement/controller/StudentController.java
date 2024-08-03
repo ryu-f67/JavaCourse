@@ -59,12 +59,15 @@ public class StudentController {
     return converter.convertStudentDetails(students, studentCourses);
   }
 
+  /**
+   * 受講生コース情報の検索を行います。 論理削除を行った受講生のコース一覧も表示されます。
+   *
+   * @return 受講生コース情報一覧(全件)
+   */
   @GetMapping("/studentsCoursesList")
-  public String getStudentCourseList(Model model) {
-    List<StudentCourse> studentCourses = service.searchStudentCourseList();
+  public List<StudentCourse> getStudentCourseList() {
 
-    model.addAttribute("studentsCourseList", studentCourses);
-    return "studentsCourseList";
+    return service.searchStudentCourseList();
   }
 
   /**
