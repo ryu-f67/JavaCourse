@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import student.management.StudentManagement.controller.converter.StudentConverter;
 import student.management.StudentManagement.data.Student;
 import student.management.StudentManagement.data.StudentCourse;
 import student.management.StudentManagement.domain.StudentDetail;
@@ -17,10 +18,12 @@ import student.management.StudentManagement.repository.StudentRepository;
 public class StudentService {
 
   private StudentRepository repository;
+  private StudentConverter converter;
 
   @Autowired
-  public StudentService(StudentRepository repository) {
+  public StudentService(StudentRepository repository, StudentConverter converter) {
     this.repository = repository;
+    this.converter = converter;
   }
 
   /**
@@ -29,8 +32,10 @@ public class StudentService {
    *
    * @return 受講生一覧(全件)
    */
-  public List<Student> searchAllStudentList() {
-    return repository.searchAllStudents();
+  public List<StudentDetail> searchAllStudentList() {
+    List<Student> studentList = repository.searchAllStudents();
+    List<StudentCourse> studentCoursesList = repository.searchStudentCourses();
+    return converter.convertStudentDetails(studentList, studentCoursesList);
   }
 
   /**
@@ -39,8 +44,10 @@ public class StudentService {
    *
    * @return 受講生一覧(全件)
    */
-  public List<Student> searchStudentList() {
-    return repository.search();
+  public List<StudentDetail> searchStudentList() {
+    List<Student> studentList = repository.search();
+    List<StudentCourse> studentCoursesList = repository.searchStudentCourses();
+    return converter.convertStudentDetails(studentList, studentCoursesList);
   }
 
   /**
@@ -53,10 +60,7 @@ public class StudentService {
   public StudentDetail searchStudent(String id) {
     Student student = repository.searchStudent(id);
     List<StudentCourse> studentCourses = repository.searchStudentCourse(student.getId());
-    StudentDetail studentDetail = new StudentDetail();
-    studentDetail.setStudent(student);
-    studentDetail.setStudentCourses(studentCourses);
-    return studentDetail;
+    return new StudentDetail(student, studentCourses);
   }
 
   /**
