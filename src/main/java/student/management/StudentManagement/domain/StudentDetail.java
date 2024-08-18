@@ -15,6 +15,6 @@ import student.management.StudentManagement.data.StudentCourse;
 public class StudentDetail {
 
   private Student student;
-  private List<StudentCourse> studentCourses;
+  private List<StudentCourse> studentCourseList;
 
 }

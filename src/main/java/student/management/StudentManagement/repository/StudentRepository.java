@@ -49,7 +49,7 @@ public interface StudentRepository {
    * @return 受講生コース情報(全件)
    */
   @Select("SELECT * FROM students_courses")
-  List<StudentCourse> searchStudentCourses();
+  List<StudentCourse> searchStudentCourseList();
 
   /**
    * 受講生IDに紐づく受講生コース情報を検索します。
