@@ -41,7 +41,7 @@
   </insert>
 
   <!-- 受講生コースの登録 -->
-  <insert id="insertCourse">
+  <insert id="insertCourse" useGeneratedKeys="true" keyProperty="id">
     INSERT students_courses(student_id, course_name, start_at, end_at)
     VALUES(#{studentId}, #{courseName}, #{startAt}, #{endAt})
   </insert>
@@ -55,7 +55,7 @@
   </update>
 
   <!-- 受講生コースの更新 -->
-  <update id="updateStudentCourse">
+  <update id="updateStudentCourse" useGeneratedKeys="true" keyProperty="id">
     UPDATE students_courses
     SET course_name=#{courseName}
     WHERE id = #{id}

@@ -67,7 +67,6 @@ public interface StudentRepository {
    *
    * @param studentCourse 受講生コース情報
    */
-  @Options(useGeneratedKeys = true, keyProperty = "id")
   void insertCourse(StudentCourse studentCourse);
 
   /**
@@ -82,7 +81,6 @@ public interface StudentRepository {
    *
    * @param studentCourse 受講生コース情報(コース名)
    */
-  @Options(useGeneratedKeys = true, keyProperty = "id")
   void updateStudentCourse(StudentCourse studentCourse);
 
 }
