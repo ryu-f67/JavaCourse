@@ -10,11 +10,55 @@
 
   <!-- 受講生の全件検索(論理削除されたものを除く) -->
   <select id="search" resultType="student.management.StudentManagement.data.Student">
-    SELECT * FROM students WHERE is_deleted=false
+    SELECT * FROM students
+    WHERE is_deleted=false
   </select>
 
   <!-- 受講生の検索 -->
   <select id="searchStudent" resultType="student.management.StudentManagement.data.Student">
-    SELECT * FROM students WHERE id=#{id}
+    SELECT * FROM students
+    WHERE id=#{id}
   </select>
+
+  <!-- 受講生コースの検索 -->
+  <select id="searchAllStudentCourseList"
+    resultType="student.management.StudentManagement.data.StudentCourse">
+    SELECT * FROM students_courses
+  </select>
+
+  <!-- 受講生IDに紐づく受講生コースの検索 -->
+  <select id="searchStudentCourseList"
+    resultType="student.management.StudentManagement.data.StudentCourse">
+    SELECT * FROM students_courses
+    WHERE student_id=#{studentId}
+  </select>
+
+  <!-- 受講生の登録 -->
+  <insert id="insert">
+    INSERT students(id, name, furigana, nickname, mail, area, age, gender, remark, is_deleted)
+    VALUES(#{id}, #{name}, #{furigana}, #{nickname}, #{mail}, #{area}, #{age}, #{gender}, #{remark},
+    false)
+  </insert>
+
+  <!-- 受講生コースの登録 -->
+  <insert id="insertCourse">
+    INSERT students_courses(student_id, course_name, start_at, end_at)
+    VALUES(#{studentId}, #{courseName}, #{startAt}, #{endAt})
+  </insert>
+
+  <!-- 受講生の更新 -->
+  <update id="updateStudent">
+    UPDATE students
+    SET name=#{name}, furigana=#{furigana}, nickname=#{nickname}, mail=#{mail},area=#{area},
+    age=#{age}, gender=#{gender}, remark=#{remark}, is_deleted=#{isDeleted}
+    WHERE id = #{id}
+  </update>
+
+  <!-- 受講生コースの更新 -->
+  <update id="updateStudentCourse">
+    UPDATE students_courses
+    SET course_name=#{courseName}
+    WHERE id = #{id}
+  </update>
+
 </mapper>
