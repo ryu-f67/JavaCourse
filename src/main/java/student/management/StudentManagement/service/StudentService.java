@@ -34,7 +34,7 @@ public class StudentService {
    */
   public List<StudentDetail> searchAllStudentList() {
     List<Student> studentList = repository.searchAllStudents();
-    List<StudentCourse> studentCourseList = repository.searchStudentCourseList();
+    List<StudentCourse> studentCourseList = repository.searchAllStudentCourseList();
     return converter.convertStudentDetails(studentList, studentCourseList);
   }
 
@@ -46,7 +46,7 @@ public class StudentService {
    */
   public List<StudentDetail> searchStudentList() {
     List<Student> studentList = repository.search();
-    List<StudentCourse> studentCourseList = repository.searchStudentCourseList();
+    List<StudentCourse> studentCourseList = repository.searchAllStudentCourseList();
     return converter.convertStudentDetails(studentList, studentCourseList);
   }
 
@@ -59,7 +59,7 @@ public class StudentService {
    */
   public StudentDetail searchStudent(String id) {
     Student student = repository.searchStudent(id);
-    List<StudentCourse> studentCourseList = repository.searchStudentCourse(student.getId());
+    List<StudentCourse> studentCourseList = repository.searchStudentCourseList(student.getId());
     return new StudentDetail(student, studentCourseList);
   }
 
@@ -70,7 +70,7 @@ public class StudentService {
    * @return 受講生コース一覧(全件)
    */
   public List<StudentCourse> searchStudentCourseList() {
-    return repository.searchStudentCourseList();
+    return repository.searchAllStudentCourseList();
   }
 
   /**
