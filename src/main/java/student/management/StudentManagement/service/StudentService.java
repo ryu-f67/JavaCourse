@@ -57,7 +57,7 @@ public class StudentService {
    * @param id 受講生ID
    * @return 受講生
    */
-  public StudentDetail searchStudent(String id) {
+  public StudentDetail searchStudent(int id) {
     Student student = repository.searchStudent(id);
     List<StudentCourse> studentCourseList = repository.searchStudentCourseList(student.getId());
     return new StudentDetail(student, studentCourseList);
@@ -98,7 +98,7 @@ public class StudentService {
    * @param studentCourse 受講生コース情報
    * @param id       受講生のID
    */
-  void initStudentsCourse(StudentCourse studentCourse, String id) {
+  void initStudentsCourse(StudentCourse studentCourse, int id) {
     LocalDateTime now = LocalDateTime.now();
 
     studentCourse.setStudentId(id);

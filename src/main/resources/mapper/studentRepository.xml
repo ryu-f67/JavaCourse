@@ -33,16 +33,23 @@
     WHERE student_id=#{studentId}
   </select>
 
+  <!-- 受講生コースIDに紐づく受講生コースの検索 -->
+  <select id="searchCourseList"
+    resultType="student.management.StudentManagement.data.StudentCourse">
+    SELECT * FROM students_courses
+    WHERE id=#{id}
+  </select>
+
   <!-- 受講生の登録 -->
-  <insert id="insert">
-    INSERT students(id, name, furigana, nickname, mail, area, age, gender, remark, is_deleted)
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO students(id, name, furigana, nickname, mail, area, age, gender, remark, is_deleted)
     VALUES(#{id}, #{name}, #{furigana}, #{nickname}, #{mail}, #{area}, #{age}, #{gender}, #{remark},
     false)
   </insert>
 
   <!-- 受講生コースの登録 -->
   <insert id="insertCourse" useGeneratedKeys="true" keyProperty="id">
-    INSERT students_courses(student_id, course_name, start_at, end_at)
+    INSERT INTO students_courses(student_id, course_name, start_at, end_at)
     VALUES(#{studentId}, #{courseName}, #{startAt}, #{endAt})
   </insert>
 
