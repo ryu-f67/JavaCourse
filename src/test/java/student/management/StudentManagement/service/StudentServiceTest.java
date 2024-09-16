@@ -70,7 +70,7 @@ class StudentServiceTest {
 
   @Test
   void IDに対応する受講生情報の検索が動作すること() {
-    String id = "999";
+    int id = 999;
     Student student = new Student();
     student.setId(id);
     when(repository.searchStudent(id)).thenReturn(student);
@@ -109,7 +109,7 @@ class StudentServiceTest {
 
   @Test
   void 受講生情報の登録_初期化処理が行われること() {
-    String id = "999";
+    int id = 999;
     Student student = new Student();
     student.setId(id);
     StudentCourse studentCourse = new StudentCourse();
