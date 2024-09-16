@@ -32,9 +32,10 @@ public class StudentController {
   }
 
   /**
-   * 全受講生の検索を行います。 論理削除を行った受講生も表示されます。
+   * 全受講生の検索を行います。
+   * 論理削除を行った受講生も表示されます。
    *
-   * @return 受講生一覧(全件)
+   * @return 受講生一覧のリスト(全件)
    */
   @GetMapping("/allStudentsList")
   public List<StudentDetail> getAllStudentList() {
@@ -46,7 +47,7 @@ public class StudentController {
    * 全受講生の検索を行います。
    * 論理削除を行った受講生は表示されません。
    *
-   * @return 受講生一覧(全件)
+   * @return 受講生一覧のリスト(全件)
    */
   @GetMapping("/studentsList")
   public List<StudentDetail> getStudentList() {
@@ -55,9 +56,10 @@ public class StudentController {
   }
 
   /**
-   * 受講生コース情報の検索を行います。 論理削除を行った受講生のコース一覧も表示されます。
+   * 受講生コース情報の検索を行います。
+   * 論理削除を行った受講生のコース一覧も表示されます。
    *
-   * @return 受講生コース情報一覧(全件)
+   * @return 受講生コース情報一覧のリスト(全件)
    */
   @GetMapping("/studentsCoursesList")
   public List<StudentCourse> getStudentCourseList() {
@@ -68,8 +70,8 @@ public class StudentController {
   /**
    * 受講生を登録します。
    *
-   * @param studentDetail 受講生と受講コースの情報
-   * @return 受講生と受講コースの情報
+   * @param studentDetail 受講生詳細情報
+   * @return 受講生詳細情報
    */
   @PostMapping("/registerStudent")
   public ResponseEntity<StudentDetail> registerStudent(
@@ -83,7 +85,7 @@ public class StudentController {
    * IDに対応する受講生の情報を表示します。
    *
    * @param id 受講生ID
-   * @return 受講生
+   * @return 受講生詳細情報
    */
   @GetMapping("/student/{id}")
   public StudentDetail getStudent(@PathVariable @NotNull int id) {
@@ -94,8 +96,8 @@ public class StudentController {
    * 受講生情報の更新をします。
    * キャンセルフラグもここで操作します。(論理削除)
    *
-   * @param studentDetail　受講生と受講コースの情報
-   * @return 受講生と受講コースの情報
+   * @param studentDetail　受講生詳細情報
+   * @return 受講生詳細情報
    */
   @PutMapping("/updateStudent")
   public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentDetail studentDetail) {

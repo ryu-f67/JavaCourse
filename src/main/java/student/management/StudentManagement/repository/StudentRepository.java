@@ -15,7 +15,7 @@ public interface StudentRepository {
   /**
    * すべての受講生情報を検索します。 (論理削除した受講生を含む。)
    *
-   * @return 受講生情報(全件)
+   * @return 受講生情報のリスト(全件)
    */
   List<Student> searchAllStudents();
 
@@ -23,7 +23,7 @@ public interface StudentRepository {
    * すべての受講生情報を検索します。
    * (論理削除した受講生を除く。)
    *
-   * @return 受講生情報(全件)
+   * @return 受講生情報のリスト(全件)
    */
   List<Student> search();
 
@@ -39,7 +39,7 @@ public interface StudentRepository {
    * すべての受講生コース情報を検索します。
    * (論理削除した受講生受講生のコース情報を含む。)
    *
-   * @return 受講生コース情報(全件)
+   * @return 受講生コース情報のリスト(全件)
    */
   List<StudentCourse> searchAllStudentCourseList();
 
@@ -47,7 +47,7 @@ public interface StudentRepository {
    * 受講生IDに紐づく受講生コース情報を検索します。
    *
    * @param studentId 受講生ID
-   * @return 受講生IDに紐づく受講生コース情報
+   * @return 受講生IDに紐づく受講生コース情報のリスト
    */
   List<StudentCourse> searchStudentCourseList(int studentId);
 

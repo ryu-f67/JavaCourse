@@ -30,7 +30,7 @@ public class StudentService {
    * 全受講生の検索を行います。
    * 論理削除を行った受講生も表示されます。
    *
-   * @return 受講生一覧(全件)
+   * @return 受講生一覧のリスト(全件)
    */
   public List<StudentDetail> searchAllStudentList() {
     List<Student> studentList = repository.searchAllStudents();
@@ -42,7 +42,7 @@ public class StudentService {
    * 全受講生の検索を行います。
    * 論理削除を行った受講生は表示されません。
    *
-   * @return 受講生一覧(全件)
+   * @return 受講生一覧のリスト(全件)
    */
   public List<StudentDetail> searchStudentList() {
     List<Student> studentList = repository.search();
@@ -55,7 +55,7 @@ public class StudentService {
    * IDに対応する受講生情報を取得した後、その受講生に対応した受講生コース情報を取得し設定します。
    *
    * @param id 受講生ID
-   * @return 受講生
+   * @return 受講生詳細情報
    */
   public StudentDetail searchStudent(int id) {
     Student student = repository.searchStudent(id);
@@ -67,7 +67,7 @@ public class StudentService {
    * 受講生のコース情報の検索を行います。
    * すべてのコース情報が表示されます。
    *
-   * @return 受講生コース一覧(全件)
+   * @return 受講生コース一覧のリスト(全件)
    */
   public List<StudentCourse> searchStudentCourseList() {
     return repository.searchAllStudentCourseList();
@@ -96,7 +96,7 @@ public class StudentService {
    * 受講生コース情報を登録する際の初期情報を設定する。
    *
    * @param studentCourse 受講生コース情報
-   * @param id       受講生のID
+   * @param id 受講生のID
    */
   void initStudentsCourse(StudentCourse studentCourse, int id) {
     LocalDateTime now = LocalDateTime.now();
