@@ -1,6 +1,7 @@
 package student.management.StudentManagement.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,16 +52,95 @@ public class StudentService {
   }
 
   /**
-   * 受講生検索です。
-   * IDに対応する受講生情報を取得した後、その受講生に対応した受講生コース情報を取得し設定します。
+   * 受講生IDを検索します。 受講生のIDを設定します。
    *
    * @param id 受講生ID
-   * @return 受講生詳細情報
+   * @return 受講生IDリスト
    */
-  public StudentDetail searchStudent(int id) {
-    Student student = repository.searchStudent(id);
-    List<StudentCourse> studentCourseList = repository.searchStudentCourseList(student.getId());
-    return new StudentDetail(student, studentCourseList);
+  public List<Integer> searchStudentById(Integer id) {
+    Student student = repository.searchStudentById(id);
+    return List.of(student.getId());
+  }
+
+  /**
+   * 受講生IDを検索します。 受講生の名前に対応する受講生情報を取得した後、その受講生のIDを取得し設定します。
+   *
+   * @param name 受講生の名前
+   * @return 受講生IDリスト
+   */
+  public List<Integer> searchStudentByName(String name) {
+    List<Student> studentList = repository.searchStudentByName(name);
+    List<Integer> studentIdList = new ArrayList<>();
+    for (Student student : studentList) {
+      studentIdList.add(student.getId());
+    }
+    return studentIdList;
+  }
+
+  /**
+   * 受講生IDを検索します。 受講生の居住地に対応する受講生情報を取得した後、その受講生のIDを取得し設定します。
+   *
+   * @param area 受講生の居住地
+   * @return 受講生IDリスト
+   */
+  public List<Integer> searchStudentByArea(String area) {
+    List<Student> studentList = repository.searchStudentByArea(area);
+    List<Integer> studentIdList = new ArrayList<>();
+    for (Student student : studentList) {
+      studentIdList.add(student.getId());
+    }
+    return studentIdList;
+  }
+
+  /**
+   * 受講生IDを検索します。 受講コースに対応する受講生情報を取得した後、その受講生のIDを取得し設定します。
+   *
+   * @param courseName 受講コース名
+   * @return 受講生IDリスト
+   */
+  public List<Integer> searchStudentByCourseName(String courseName) {
+    List<StudentCourse> studentCourseList = repository.searchCourseListByCourseName(courseName);
+    List<Integer> studentIdList = new ArrayList<>();
+    for (StudentCourse studentCourse : studentCourseList) {
+      studentIdList.add(studentCourse.getStudentId());
+    }
+    return studentIdList;
+  }
+
+  /**
+   * 受講生検索です。 リクエストパラメータに対応した受講生情報を取得し設定します。
+   *
+   * @param id         受講生ID
+   * @param name       受講生の名前
+   * @param area       受講生の居住地
+   * @param courseName 受講コース名
+   * @return 絞り込み後の受講生詳細情報
+   */
+  public List<StudentDetail> searchStudent(Integer id, String name, String area,
+      String courseName) {
+    List<Integer> studentIdList = new ArrayList<>();
+    for (Student student : repository.searchAllStudents()) {
+      studentIdList.add(student.getId());
+    }
+    if (id != null) {
+      studentIdList.retainAll(searchStudentById(id));
+    }
+    if (name != null) {
+      studentIdList.retainAll(searchStudentByName(name));
+    }
+    if (area != null) {
+      studentIdList.retainAll(searchStudentByArea(area));
+    }
+    if (courseName != null) {
+      studentIdList.retainAll(searchStudentByCourseName(courseName));
+    }
+
+    List<Student> studentList = new ArrayList<>();
+    for (Integer studentId : studentIdList) {
+      studentList.add(repository.searchStudentById(studentId));
+    }
+    List<StudentCourse> studentCourseList = repository.searchStudentCourseList(studentIdList);
+    return converter.convertStudentDetails(studentList, studentCourseList);
   }
 
   /**
