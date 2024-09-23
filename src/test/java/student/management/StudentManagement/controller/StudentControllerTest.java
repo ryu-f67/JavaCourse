@@ -173,13 +173,6 @@ class StudentControllerTest {
   }
 
   @Test
-  void 受講生情報の例外APIが実行できてステータスが400で返ってくること() throws Exception {
-    mockMvc.perform(get("/testException"))
-        .andExpect(status().is4xxClientError())
-        .andExpect(content().string("errorが発生しました。"));
-  }
-
-  @Test
   void 受講生詳細の受講生で適切な値を入力したときに入力チェックに異常が発生しないこと() {
     Student student = new Student();
     student.setId(1);
