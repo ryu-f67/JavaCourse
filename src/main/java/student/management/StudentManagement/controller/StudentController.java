@@ -82,6 +82,7 @@ public class StudentController {
    * 受講生を検索します。
    * クエリパラメータに対応する受講生の情報を表示します。
    *
+   * @param id 受講生ID
    * @param name 受講生の名前
    * @param area 受講生の居住地
    * @param courseName 受講コース名
