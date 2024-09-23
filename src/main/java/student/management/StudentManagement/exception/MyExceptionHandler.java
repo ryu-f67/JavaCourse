@@ -12,4 +12,10 @@ public class MyExceptionHandler {
   public ResponseEntity<String> handleTestException(TestException ex) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
   }
+
+  @ExceptionHandler(InvalidStudentIdListException.class)
+  public ResponseEntity<String> handleInvalidStudentIdListException(
+      InvalidStudentIdListException ex) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+  }
 }

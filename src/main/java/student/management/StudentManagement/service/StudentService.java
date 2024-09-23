@@ -10,6 +10,7 @@ import student.management.StudentManagement.controller.converter.StudentConverte
 import student.management.StudentManagement.data.Student;
 import student.management.StudentManagement.data.StudentCourse;
 import student.management.StudentManagement.domain.StudentDetail;
+import student.management.StudentManagement.exception.InvalidStudentIdListException;
 import student.management.StudentManagement.repository.StudentRepository;
 
 /**
@@ -59,6 +60,9 @@ public class StudentService {
    */
   public List<Integer> searchStudentById(Integer id) {
     Student student = repository.searchStudentById(id);
+    if (student == null) {
+      return new ArrayList<>();
+    }
     return List.of(student.getId());
   }
 
@@ -133,6 +137,10 @@ public class StudentService {
     }
     if (courseName != null) {
       studentIdList.retainAll(searchStudentByCourseName(courseName));
+    }
+
+    if (studentIdList.isEmpty()) {
+      throw new InvalidStudentIdListException("検索結果に一致するものが見つかりませんでした。");
     }
 
     List<Student> studentList = new ArrayList<>();
