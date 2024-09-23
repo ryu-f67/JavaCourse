@@ -1,7 +1,6 @@
 package student.management.StudentManagement.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,24 +20,24 @@ class StudentRepositoryTest {
   @Test
   void 受講生の全件検索が行えること_論理削除を表示() {
     List<Student> actual = sut.searchAllStudents();
-    assertThat(actual.size()).isEqualTo(2);
+    assertThat(actual.size()).isEqualTo(5);
   }
 
   @Test
   void 受講生の全件検索が行えること_論理削除を非表示() {
     List<Student> actual = sut.search();
-    assertThat(actual.size()).isEqualTo(1);
+    assertThat(actual.size()).isEqualTo(3);
   }
 
   @Test
   void IDに紐づいた受講生の検索が行えること() {
-    Student actual = sut.searchStudent(1);
+    Student actual = sut.searchStudentById(1);
     assertThat(actual.getId()).isEqualTo(1);
     assertThat(actual.getName()).isEqualTo("山田太郎");
     assertThat(actual.getFurigana()).isEqualTo("やまだたろう");
     assertThat(actual.getNickname()).isEqualTo("たろう");
     assertThat(actual.getMail()).isEqualTo("taro@example.com");
-    assertThat(actual.getArea()).isEqualTo("東京");
+    assertThat(actual.getArea()).isEqualTo("東京都");
     assertThat(actual.getAge()).isEqualTo(30);
     assertThat(actual.getGender()).isEqualTo("男性");
     assertThat(actual.getRemark()).isEqualTo("");
@@ -46,15 +45,41 @@ class StudentRepositoryTest {
   }
 
   @Test
-  void 受講生コース情報の全件検索が行えること() {
-    List<StudentCourse> actual = sut.searchAllStudentCourseList();
+  void 受講生の名前に紐づいた受講生の検索が行えること_名前で検索() {
+    List<Student> actual = sut.searchStudentByName("山田");
     assertThat(actual.size()).isEqualTo(3);
   }
 
   @Test
-  void IDに紐づいた受講生コース情報の検索が行えること() {
-    List<StudentCourse> actual = sut.searchStudentCourseList(1);
+  void 受講生の名前に紐づいた受講生の検索が行えること_ふりがなで検索() {
+    List<Student> actual = sut.searchStudentByName("はなこ");
     assertThat(actual.size()).isEqualTo(2);
+  }
+
+  @Test
+  void 受講生の居住地に紐づいた受講生の検索が行えること() {
+    List<Student> actual = sut.searchStudentByArea("東京都");
+    assertThat(actual.size()).isEqualTo(2);
+  }
+
+  @Test
+  void 受講生コース情報の全件検索が行えること() {
+    List<StudentCourse> actual = sut.searchAllStudentCourseList();
+    assertThat(actual.size()).isEqualTo(8);
+  }
+
+  @Test
+  void IDに紐づいた受講生コース情報の検索が行えること() {
+    List<Integer> studentId = List.of(1);
+    List<StudentCourse> actual = sut.searchStudentCourseList(studentId);
+    assertThat(actual.size()).isEqualTo(3);
+  }
+
+  @Test
+  void 受講コース名に紐づいた受講生コース情報の検索が行えること() {
+    String courseName = "JAVA";
+    List<StudentCourse> actual = sut.searchCourseListByCourseName(courseName);
+    assertThat(actual.size()).isEqualTo(3);
   }
 
   @Test
@@ -74,7 +99,7 @@ class StudentRepositoryTest {
 
     List<Student> actual = sut.searchAllStudents();
 
-    assertThat(actual.size()).isEqualTo(3);
+    assertThat(actual.size()).isEqualTo(6);
   }
 
   @Test
@@ -89,7 +114,7 @@ class StudentRepositoryTest {
 
     List<StudentCourse> actual = sut.searchAllStudentCourseList();
 
-    assertThat(actual.size()).isEqualTo(4);
+    assertThat(actual.size()).isEqualTo(9);
   }
 
   @Test
@@ -108,7 +133,7 @@ class StudentRepositoryTest {
 
     sut.updateStudent(student);
 
-    Student actual = sut.searchStudent(1);
+    Student actual = sut.searchStudentById(1);
 
     assertThat(actual.getArea()).isEqualTo("神奈川");
     assertThat(actual.getAge()).isEqualTo(31);
@@ -124,7 +149,7 @@ class StudentRepositoryTest {
 
     sut.updateStudentCourse(studentCourse);
 
-    List<StudentCourse> actual = sut.searchStudentCourseList(2)
+    List<StudentCourse> actual = sut.searchStudentCourseList(List.of(2))
         .stream()
         .filter(s -> Objects.equals(s.getId(), 2))
         .toList();
