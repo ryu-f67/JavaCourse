@@ -1,11 +1,13 @@
 package student.management.StudentManagement.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -79,10 +81,20 @@ public class StudentController {
   }
 
   /**
+   * 受講生を検索します。 IDに対応する受講生の情報を表示します。
+   *
+   * @param id 受講生ID
+   * @return 受講生詳細情報
+   */
+  @GetMapping("/student/{id}")
+  public StudentDetail getStudentyd(@PathVariable @NotNull int id) {
+    return service.searchStudentById(id);
+  }
+
+  /**
    * 受講生を検索します。
    * クエリパラメータに対応する受講生の情報を表示します。
    *
-   * @param id 受講生ID
    * @param name 受講生の名前
    * @param area 受講生の居住地
    * @param courseName 受講コース名
@@ -90,11 +102,10 @@ public class StudentController {
    */
   @GetMapping("/student")
   public List<StudentDetail> getStudent(
-      @RequestParam(name = "id", required = false) Integer id,
       @RequestParam(name = "name", required = false) String name,
       @RequestParam(name = "area", required = false) String area,
       @RequestParam(name = "course", required = false) String courseName) {
-    return service.searchStudent(id, name, area, courseName);
+    return service.searchStudent(name, area, courseName);
   }
 
   /**

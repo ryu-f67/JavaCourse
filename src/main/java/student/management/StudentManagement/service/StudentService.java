@@ -53,17 +53,16 @@ public class StudentService {
   }
 
   /**
-   * 受講生IDを検索します。 受講生のIDを設定します。
+   * 受講生検索です。
+   * IDに対応する受講生情報を取得した後、その受講生に対応した受講生コース情報を取得し設定します。
    *
    * @param id 受講生ID
-   * @return 受講生IDリスト
+   * @return 受講生詳細情報
    */
-  public List<Integer> searchStudentById(Integer id) {
+  public StudentDetail searchStudentById(int id) {
     Student student = repository.searchStudentById(id);
-    if (student == null) {
-      return new ArrayList<>();
-    }
-    return List.of(student.getId());
+    List<StudentCourse> studentCourseList = repository.searchStudentCourseList(student.getId());
+    return new StudentDetail(student, studentCourseList);
   }
 
   /**
@@ -114,20 +113,15 @@ public class StudentService {
   /**
    * 受講生検索です。 リクエストパラメータに対応した受講生情報を取得し設定します。
    *
-   * @param id         受講生ID
    * @param name       受講生の名前
    * @param area       受講生の居住地
    * @param courseName 受講コース名
    * @return 絞り込み後の受講生詳細情報
    */
-  public List<StudentDetail> searchStudent(Integer id, String name, String area,
-      String courseName) {
+  public List<StudentDetail> searchStudent(String name, String area, String courseName) {
     List<Integer> studentIdList = new ArrayList<>();
     for (Student student : repository.searchAllStudents()) {
       studentIdList.add(student.getId());
-    }
-    if (id != null) {
-      studentIdList.retainAll(searchStudentById(id));
     }
     if (name != null) {
       studentIdList.retainAll(searchStudentByName(name));
