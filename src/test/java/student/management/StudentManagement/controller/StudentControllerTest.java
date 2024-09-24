@@ -53,12 +53,12 @@ class StudentControllerTest {
   }
 
   @Test
-  void 受講生IDの検索ができること_id指定() throws Exception {
+  void IDに紐づいた受講生の検索ができること() throws Exception {
     int id = 999;
-    mockMvc.perform(get("/student?id={id}", id))
+    mockMvc.perform(get("/student/{id}", id))
         .andExpect(status().isOk());
 
-    verify(service, times(1)).searchStudent(id, null, null, null);
+    verify(service, times(1)).searchStudentById(id);
   }
 
   @Test
@@ -67,7 +67,7 @@ class StudentControllerTest {
     mockMvc.perform(get("/student?name={name}", name))
         .andExpect(status().isOk());
 
-    verify(service, times(1)).searchStudent(null, name, null, null);
+    verify(service, times(1)).searchStudent(name, null, null);
   }
 
   @Test
@@ -76,7 +76,7 @@ class StudentControllerTest {
     mockMvc.perform(get("/student?area={area}", area))
         .andExpect(status().isOk());
 
-    verify(service, times(1)).searchStudent(null, null, area, null);
+    verify(service, times(1)).searchStudent(null, area, null);
   }
 
   @Test
@@ -85,7 +85,7 @@ class StudentControllerTest {
     mockMvc.perform(get("/student?course={courseName}", courseName))
         .andExpect(status().isOk());
 
-    verify(service, times(1)).searchStudent(null, null, null, courseName);
+    verify(service, times(1)).searchStudent(null, null, courseName);
   }
 
   @Test
@@ -99,14 +99,14 @@ class StudentControllerTest {
                 courseName))
         .andExpect(status().isOk());
 
-    verify(service, times(1)).searchStudent(id, name, area, courseName);
+    verify(service, times(1)).searchStudent(name, area, courseName);
   }
 
   @Test
   void 条件を指定しなかった場合に全受講生一覧が返ってくること() throws Exception {
     mockMvc.perform(get("/student")).andExpect(status().isOk());
 
-    verify(service, times(1)).searchStudent(null, null, null, null);
+    verify(service, times(1)).searchStudent(null, null, null);
   }
 
   @Test

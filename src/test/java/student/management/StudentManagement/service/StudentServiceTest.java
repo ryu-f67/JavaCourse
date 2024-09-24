@@ -64,16 +64,19 @@ class StudentServiceTest {
   }
 
   @Test
-  void IDに対応する受講生IDの検索が動作すること() {
+  void IDに対応する受講生情報の検索が動作すること() {
     Student student = createStudent();
     when(repository.searchStudentById(student.getId())).thenReturn(student);
+    when(repository.searchStudentCourseList(student.getId())).thenReturn(new ArrayList<>());
 
-    List<Integer> excepted = List.of(student.getId());
+    StudentDetail excepted = new StudentDetail(student, new ArrayList<>());
 
-    List<Integer> actual = sut.searchStudentById(student.getId());
+    StudentDetail actual = sut.searchStudentById(student.getId());
 
     verify(repository, times(1)).searchStudentById(student.getId());
-    assertThat(actual).isEqualTo(excepted);
+    verify(repository, times(1)).searchStudentCourseList(student.getId());
+    assertThat(actual.getStudent().getId()).isEqualTo(excepted.getStudent().getId());
+
   }
 
   @Test
