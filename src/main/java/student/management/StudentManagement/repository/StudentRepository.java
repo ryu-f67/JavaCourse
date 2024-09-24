@@ -79,10 +79,10 @@ public interface StudentRepository {
   /**
    * 受講コース名に紐づく受講生コース情報を検索します。
    *
-   * @param CourseName 受講コース名
+   * @param courseName 受講コース名
    * @return 受講コース名に紐づく受講生コース情報のリスト
    */
-  List<StudentCourse> searchCourseListByCourseName(String CourseName);
+  List<StudentCourse> searchCourseListByCourseName(String courseName);
 
   /**
    * 受講生情報を登録します。
