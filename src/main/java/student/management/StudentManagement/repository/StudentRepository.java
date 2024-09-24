@@ -66,6 +66,14 @@ public interface StudentRepository {
    * @param studentId 受講生ID
    * @return 受講生IDに紐づく受講生コース情報のリスト
    */
+  List<StudentCourse> searchStudentCourseList(Integer studentId);
+
+  /**
+   * 受講生IDに紐づく受講生コース情報を検索します。
+   *
+   * @param studentId 受講生ID(リスト)
+   * @return 受講生IDに紐づく受講生コース情報のリスト
+   */
   List<StudentCourse> searchStudentCourseList(List<Integer> studentId);
 
   /**
