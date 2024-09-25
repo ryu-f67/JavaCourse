@@ -1,16 +1,13 @@
 package student.management.StudentManagement.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,7 +47,6 @@ class StudentServiceTest {
     verify(repository, times(1)).searchAllStudents();
     verify(repository, times(1)).searchAllStudentCourseList();
     verify(converter, times(1)).convertStudentDetails(studentList, studentCourseList);
-
   }
 
   @Test
@@ -65,32 +61,71 @@ class StudentServiceTest {
     verify(repository, times(1)).search();
     verify(repository, times(1)).searchAllStudentCourseList();
     verify(converter, times(1)).convertStudentDetails(studentList, studentCourseList);
-
   }
 
   @Test
   void IDに対応する受講生情報の検索が動作すること() {
-    int id = 999;
-    Student student = new Student();
-    student.setId(id);
-    when(repository.searchStudent(id)).thenReturn(student);
-    when(repository.searchStudentCourseList(id)).thenReturn(new ArrayList<>());
+    Student student = createStudent();
+    when(repository.searchStudentById(student.getId())).thenReturn(student);
+    when(repository.searchStudentCourseList(student.getId())).thenReturn(new ArrayList<>());
 
     StudentDetail excepted = new StudentDetail(student, new ArrayList<>());
 
-    StudentDetail actual = sut.searchStudent(id);
+    StudentDetail actual = sut.searchStudentById(student.getId());
 
-    verify(repository, times(1)).searchStudent(id);
-    verify(repository, times(1)).searchStudentCourseList(id);
+    verify(repository, times(1)).searchStudentById(student.getId());
+    verify(repository, times(1)).searchStudentCourseList(student.getId());
     assertThat(actual.getStudent().getId()).isEqualTo(excepted.getStudent().getId());
 
+  }
+
+  @Test
+  void 受講生の名前に対応する受講生IDの検索が動作すること() {
+    Student student = createStudent();
+    List<Student> studentList = List.of(student);
+    when(repository.searchStudentByName(student.getName())).thenReturn(studentList);
+
+    List<Integer> excepted = List.of(student.getId());
+
+    List<Integer> actual = sut.searchStudentByName(student.getName());
+
+    verify(repository, times(1)).searchStudentByName(student.getName());
+    assertThat(actual).isEqualTo(excepted);
+  }
+
+  @Test
+  void 受講生の居住地に対応する受講生情報の検索が動作すること() {
+    Student student = createStudent();
+    List<Student> studentList = List.of(student);
+    when(repository.searchStudentByArea(student.getArea())).thenReturn(studentList);
+
+    List<Integer> excepted = List.of(student.getId());
+
+    List<Integer> actual = sut.searchStudentByArea(student.getArea());
+
+    verify(repository, times(1)).searchStudentByArea(student.getArea());
+    assertThat(actual).isEqualTo(excepted);
+  }
+
+  @Test
+  void 受講コースに対応する受講生情報の検索が動作すること() {
+    StudentCourse studentCourse = createStudentCourse();
+    List<StudentCourse> studentCourseList = List.of(studentCourse);
+    when(repository.searchCourseListByCourseName(studentCourse.getCourseName())).thenReturn(
+        studentCourseList);
+
+    List<Integer> excepted = List.of(studentCourse.getStudentId());
+
+    List<Integer> actual = sut.searchStudentByCourseName(studentCourse.getCourseName());
+
+    verify(repository, times(1)).searchCourseListByCourseName(studentCourse.getCourseName());
+    assertThat(actual).isEqualTo(excepted);
   }
 
   @Test
   void 受講生のコース情報の検索が動作すること() {
     sut.searchStudentCourseList();
     verify(repository, times(1)).searchAllStudentCourseList();
-
   }
 
   @Test
@@ -104,23 +139,18 @@ class StudentServiceTest {
 
     verify(repository, times(1)).insert(student);
     verify(repository, times(1)).insertCourse(studentCourse);
-
   }
 
   @Test
   void 受講生情報の登録_初期化処理が行われること() {
-    int id = 999;
-    Student student = new Student();
-    student.setId(id);
+    Student student = createStudent();
     StudentCourse studentCourse = new StudentCourse();
 
     sut.initStudentsCourse(studentCourse, student.getId());
 
-    assertThat(student.getId()).isEqualTo(id);
     assertThat(studentCourse.getStartAt().getHour()).isEqualTo(LocalDateTime.now().getHour());
     assertThat(studentCourse.getEndAt().getMonth()).isEqualTo(
         LocalDateTime.now().plusMonths(2).getMonth());
-
   }
 
   @Test
@@ -134,7 +164,23 @@ class StudentServiceTest {
 
     verify(repository, times(1)).updateStudent(student);
     verify(repository, times(1)).updateStudentCourse(studentCourse);
+  }
 
+  private static Student createStudent() {
+    Student student = new Student();
+    student.setId(999);
+    student.setName("名前");
+    student.setFurigana("なまえ");
+    student.setArea("居住地");
+    return student;
+  }
+
+  private static StudentCourse createStudentCourse() {
+    StudentCourse studentCourse = new StudentCourse();
+    studentCourse.setId(9999);
+    studentCourse.setStudentId(999);
+    studentCourse.setCourseName("コース");
+    return studentCourse;
   }
 
 }

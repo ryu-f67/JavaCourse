@@ -53,12 +53,60 @@ class StudentControllerTest {
   }
 
   @Test
-  void 受講生の検索ができること() throws Exception {
+  void IDに紐づいた受講生の検索ができること() throws Exception {
     int id = 999;
     mockMvc.perform(get("/student/{id}", id))
         .andExpect(status().isOk());
 
-    verify(service, times(1)).searchStudent(id);
+    verify(service, times(1)).searchStudentById(id);
+  }
+
+  @Test
+  void 受講生IDの検索ができること_name指定() throws Exception {
+    String name = "苗字　名前";
+    mockMvc.perform(get("/student?name={name}", name))
+        .andExpect(status().isOk());
+
+    verify(service, times(1)).searchStudent(name, null, null);
+  }
+
+  @Test
+  void 受講生IDの検索ができること_area指定() throws Exception {
+    String area = "居住地";
+    mockMvc.perform(get("/student?area={area}", area))
+        .andExpect(status().isOk());
+
+    verify(service, times(1)).searchStudent(null, area, null);
+  }
+
+  @Test
+  void 受講生IDの検索ができること_course指定() throws Exception {
+    String courseName = "コース";
+    mockMvc.perform(get("/student?course={courseName}", courseName))
+        .andExpect(status().isOk());
+
+    verify(service, times(1)).searchStudent(null, null, courseName);
+  }
+
+  @Test
+  void 条件を指定して受講生の検索ができること() throws Exception {
+    Integer id = 999;
+    String name = "名前";
+    String area = "居住地";
+    String courseName = "コース";
+    mockMvc.perform(
+            get("/student?id={id}&name={name}&area={area}&course={courseName}", id, name, area,
+                courseName))
+        .andExpect(status().isOk());
+
+    verify(service, times(1)).searchStudent(name, area, courseName);
+  }
+
+  @Test
+  void 条件を指定しなかった場合に全受講生一覧が返ってくること() throws Exception {
+    mockMvc.perform(get("/student")).andExpect(status().isOk());
+
+    verify(service, times(1)).searchStudent(null, null, null);
   }
 
   @Test
@@ -125,13 +173,6 @@ class StudentControllerTest {
   }
 
   @Test
-  void 受講生情報の例外APIが実行できてステータスが400で返ってくること() throws Exception {
-    mockMvc.perform(get("/testException"))
-        .andExpect(status().is4xxClientError())
-        .andExpect(content().string("errorが発生しました。"));
-  }
-
-  @Test
   void 受講生詳細の受講生で適切な値を入力したときに入力チェックに異常が発生しないこと() {
     Student student = new Student();
     student.setId(1);
@@ -143,7 +184,6 @@ class StudentControllerTest {
     Set<ConstraintViolation<Student>> violations = validator.validate(student);
 
     assertThat(violations.size()).isEqualTo(0);
-
   }
 
   @Test
@@ -158,8 +198,6 @@ class StudentControllerTest {
     Set<ConstraintViolation<Student>> violations = validator.validate(student);
 
     assertThat(violations.size()).isEqualTo(1);
-
   }
-
 
 }

@@ -13,7 +13,8 @@ import student.management.StudentManagement.data.StudentCourse;
 public interface StudentRepository {
 
   /**
-   * すべての受講生情報を検索します。 (論理削除した受講生を含む。)
+   * すべての受講生情報を検索します。
+   * (論理削除した受講生を含む。)
    *
    * @return 受講生情報のリスト(全件)
    */
@@ -33,7 +34,23 @@ public interface StudentRepository {
    * @param id 受講生ID
    * @return 受講生IDに紐づく受講生情報
    */
-  Student searchStudent(int id);
+  Student searchStudentById(int id);
+
+  /**
+   * 受講生の名前に紐づく受講生情報を検索します。
+   *
+   * @param name 受講生の名前
+   * @return 受講生の名前に紐づく受講生情報
+   */
+  List<Student> searchStudentByName(String name);
+
+  /**
+   * 受講生の名前に紐づく受講生情報を検索します。
+   *
+   * @param area 受講生の居住地
+   * @return 受講生の居住地に紐づく受講生情報
+   */
+  List<Student> searchStudentByArea(String area);
 
   /**
    * すべての受講生コース情報を検索します。
@@ -49,7 +66,23 @@ public interface StudentRepository {
    * @param studentId 受講生ID
    * @return 受講生IDに紐づく受講生コース情報のリスト
    */
-  List<StudentCourse> searchStudentCourseList(int studentId);
+  List<StudentCourse> searchStudentCourseList(Integer studentId);
+
+  /**
+   * 受講生IDに紐づく受講生コース情報を検索します。
+   *
+   * @param studentId 受講生ID(リスト)
+   * @return 受講生IDに紐づく受講生コース情報のリスト
+   */
+  List<StudentCourse> searchStudentCourseList(List<Integer> studentId);
+
+  /**
+   * 受講コース名に紐づく受講生コース情報を検索します。
+   *
+   * @param courseName 受講コース名
+   * @return 受講コース名に紐づく受講生コース情報のリスト
+   */
+  List<StudentCourse> searchCourseListByCourseName(String courseName);
 
   /**
    * 受講生情報を登録します。

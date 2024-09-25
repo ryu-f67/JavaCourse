@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class MyExceptionHandler {
 
-  @ExceptionHandler(TestException.class)
-  public ResponseEntity<String> handleTestException(TestException ex) {
+  @ExceptionHandler(InvalidStudentIdListException.class)
+  public ResponseEntity<String> handleInvalidStudentIdListException(
+      InvalidStudentIdListException ex) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
   }
 }

@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import student.management.StudentManagement.data.StudentCourse;
 import student.management.StudentManagement.domain.StudentDetail;
-import student.management.StudentManagement.exception.TestException;
 import student.management.StudentManagement.service.StudentService;
 
 /**
@@ -81,15 +81,31 @@ public class StudentController {
   }
 
   /**
-   * 受講生を検索します。
-   * IDに対応する受講生の情報を表示します。
+   * 受講生を検索します。 IDに対応する受講生の情報を表示します。
    *
    * @param id 受講生ID
    * @return 受講生詳細情報
    */
   @GetMapping("/student/{id}")
-  public StudentDetail getStudent(@PathVariable @NotNull int id) {
-    return service.searchStudent(id);
+  public StudentDetail getStudentyd(@PathVariable @NotNull int id) {
+    return service.searchStudentById(id);
+  }
+
+  /**
+   * 受講生を検索します。
+   * クエリパラメータに対応する受講生の情報を表示します。
+   *
+   * @param name 受講生の名前
+   * @param area 受講生の居住地
+   * @param courseName 受講コース名
+   * @return 受講生詳細情報
+   */
+  @GetMapping("/student")
+  public List<StudentDetail> getStudent(
+      @RequestParam(name = "name", required = false) String name,
+      @RequestParam(name = "area", required = false) String area,
+      @RequestParam(name = "course", required = false) String courseName) {
+    return service.searchStudent(name, area, courseName);
   }
 
   /**
@@ -103,12 +119,6 @@ public class StudentController {
   public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentDetail studentDetail) {
     service.updateStudent(studentDetail);
     return ResponseEntity.ok("更新処理が完了しました。");
-  }
-
-  // 例外発生用のメソッド
-  @GetMapping("/testException")
-  public List<StudentDetail> raiseException() throws TestException {
-    throw new TestException("errorが発生しました。");
   }
 
 }

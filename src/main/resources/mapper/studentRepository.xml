@@ -14,10 +14,22 @@
     WHERE is_deleted=false
   </select>
 
-  <!-- 受講生の検索 -->
-  <select id="searchStudent" resultType="student.management.StudentManagement.data.Student">
+  <!-- 受講生の検索(id) -->
+  <select id="searchStudentById" resultType="student.management.StudentManagement.data.Student">
     SELECT * FROM students
     WHERE id=#{id}
+  </select>
+
+  <!-- 受講生の検索(正規表現を使用し、nameまたはfurigana) -->
+  <select id="searchStudentByName" resultType="student.management.StudentManagement.data.Student">
+    SELECT * FROM students
+    WHERE (name REGEXP #{.*name.*} OR furigana REGEXP #{.*name.*})
+  </select>
+
+  <!-- 受講生の検索(area) -->
+  <select id="searchStudentByArea" resultType="student.management.StudentManagement.data.Student">
+    SELECT * FROM students
+    WHERE area=#{area}
   </select>
 
   <!-- 受講生コースの検索 -->
@@ -30,7 +42,10 @@
   <select id="searchStudentCourseList"
     resultType="student.management.StudentManagement.data.StudentCourse">
     SELECT * FROM students_courses
-    WHERE student_id=#{studentId}
+    WHERE student_id IN
+    <foreach item="studentId" collection="list" open="(" separator="," close=")">
+      #{studentId}
+    </foreach>
   </select>
 
   <!-- 受講生コースIDに紐づく受講生コースの検索 -->
@@ -38,6 +53,13 @@
     resultType="student.management.StudentManagement.data.StudentCourse">
     SELECT * FROM students_courses
     WHERE id=#{id}
+  </select>
+
+  <!-- コース名に紐づく受講生コースの検索 -->
+  <select id="searchCourseListByCourseName"
+    resultType="student.management.StudentManagement.data.StudentCourse">
+    SELECT * FROM students_courses
+    WHERE course_name=#{course_name}
   </select>
 
   <!-- 受講生の登録 -->
